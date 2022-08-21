@@ -18,18 +18,19 @@ public class Arithmetic {
 
     public static int max() {
         if (x > y) {
-            System.out.println("Большее значение " + x);
-            return x;
-        } else System.out.println("Большее значение " + y);
-        return y;
+          return x;
+        } else return y;
     }
-
     public static int min() {
         if (x < y) {
-            System.out.println("Меньшее значение " + x);
-            return y;
-        } else System.out.println("Меньшее значение " + y);
-        return x;
+            return x;
+        } else return y;
     }
-}
+    public void printMax () {
+        System.out.println("Большее значение " + max());
+    }
+        public void printMin () {
+            System.out.println("Меньшее значение " + min());
+        }
+    }
 
