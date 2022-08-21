@@ -4,7 +4,7 @@ public class Basket {
     private String items = "";
     private int totalPrice = 0;
     private int limit;
-    private double totalWeight = 0;                                                 //1
+    private double totalWeight = 0;
 
     public Basket() {
         increaseCount(1);
@@ -30,13 +30,7 @@ public class Basket {
     public static void increaseCount(int count) {
         Basket.count = Basket.count + count;
     }
-    public void add(String name, int price, int count, double weight) {         //
-    totalWeight = totalWeight + weight;                                         //
-    }                                                                           //
-    public double getTotalWeight() {                                            //
-        System.out.println("Общий вес корзины - " + totalWeight);
-        return totalWeight;                                                     //
-    }                                                                           //
+
     public void add(String name, int price) {
         add(name, price, 1);
     }
@@ -60,6 +54,31 @@ public class Basket {
         totalPrice = totalPrice + count * price;
     }
 
+    public void add(String name, int price, int count, double weight) {
+        boolean error = false;
+        if (contains(name)) {
+            error = true;
+        }
+
+        if (totalPrice + count * price >= limit) {
+            error = true;
+        }
+
+        if (error) {
+            System.out.println("Error occured :(");
+            return;
+        }
+
+        items = items + "\n" + name + " - " + count + " шт. - " + price + " руб. весом " + weight + " кг.";
+        totalPrice = totalPrice + count * price;
+        totalWeight = totalWeight + weight;
+    }
+
+    public double getTotalWeight() {
+        System.out.println("Общий вес корзины - " + totalWeight + " кг");
+        return totalWeight;
+    }
+
     public void clear() {
         items = "";
         totalPrice = 0;
@@ -67,6 +86,7 @@ public class Basket {
     }
 
     public int getTotalPrice() {
+        System.out.println("Общая стоимость корзины " + totalPrice + " руб.");
         return totalPrice;
     }
 
