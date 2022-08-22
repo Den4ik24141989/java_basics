@@ -1,36 +1,33 @@
 public class Arithmetic {
-    public static int x;
-    public static int y;
+    public int x;
+    public int y;
 
-    public void constructor(int x, int y) {
-        Arithmetic.x = x;
-        Arithmetic.y = y;
+    public void values(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public static void sum() {
-        System.out.println(x + y);
-
+    public int sum() {
+        int sum = x + y;
+        return sum;
     }
 
-    public static void multiplication() {
-        System.out.println(x * y);
+    public int multiplication() {
+        int sum = x * y;
+        return sum;
     }
 
-    public static int max() {
+    public int max() {
         if (x > y) {
-          return x;
-        } else return y;
+            return x;
+        }
+        return y;
     }
-    public static int min() {
+
+    public int min() {
         if (x < y) {
             return x;
-        } else return y;
-    }
-    public void printMax () {
-        System.out.println("Большее значение " + max());
-    }
-        public void printMin () {
-            System.out.println("Меньшее значение " + min());
         }
+        return y;
     }
-
+}

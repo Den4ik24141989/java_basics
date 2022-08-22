@@ -1,10 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         Arithmetic arithmetic = new Arithmetic();
-        arithmetic.constructor(25,10);
-        arithmetic.sum();
-        arithmetic.multiplication();
-        arithmetic.printMax();
-        arithmetic.printMin();
+        arithmetic.values(5,6);
+        System.out.println("Сумма значений: " + arithmetic.sum());
+        System.out.println("Произведение значений: " + arithmetic.multiplication());
+        System.out.println("Минимальное значение: " + arithmetic.min());
+        System.out.println("Максимальное значение: " + arithmetic.max());
     }
 }

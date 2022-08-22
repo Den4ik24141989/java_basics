@@ -37,8 +37,6 @@ public class Basket {
 
     public void add(String name, int price, int count) {
         add(name, price, count, 1);
-        items = items + "\n" + name + " - " + count + " шт. - " + price;
-        totalPrice = totalPrice + count * price;
     }
 
     public void add(String name, int price, int count, double weight) {
