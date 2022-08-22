@@ -36,20 +36,7 @@ public class Basket {
     }
 
     public void add(String name, int price, int count) {
-        boolean error = false;
-        if (contains(name)) {
-            error = true;
-        }
-
-        if (totalPrice + count * price >= limit) {
-            error = true;
-        }
-
-        if (error) {
-            System.out.println("Error occured :(");
-            return;
-        }
-
+        add(name, price, count, 1);
         items = items + "\n" + name + " - " + count + " шт. - " + price;
         totalPrice = totalPrice + count * price;
     }
