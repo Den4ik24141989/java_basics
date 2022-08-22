@@ -71,7 +71,7 @@ public class Basket {
 
         items = items + "\n" + name + " - " + count + " шт. - " + price + " руб. весом " + weight + " кг.";
         totalPrice = totalPrice + count * price;
-        totalWeight = totalWeight + weight;
+        totalWeight = totalWeight + weight * count;
     }
 
     public double getTotalWeight() {
