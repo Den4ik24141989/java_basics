@@ -9,12 +9,10 @@ public class Main {
         denis.print("Корзина Дениса");
         denis.getTotalPrice();
         denis.getTotalWeight();
-
         Basket nastja = new Basket();
         nastja.add("Хлебцы", 40, 1,0.15);
         nastja.add("Йогурт", 38, 3, 0.1);
-        System.out.println();
-        nastja.print("Корзина Анастасии");
+        nastja.print("\nКорзина Анастасии");
         nastja.getTotalPrice();
         nastja.getTotalWeight();
     }
