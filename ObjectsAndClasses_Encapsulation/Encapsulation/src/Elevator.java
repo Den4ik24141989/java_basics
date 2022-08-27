@@ -1,22 +1,22 @@
 public class Elevator {
-    public int currentFloor = 1;
-    public int minFloor;
-    public int maxFloor;
+    private int currentFloor = 1;
+    private int minFloor;
+    private int maxFloor;
 
-    public Elevator(int minFloor, int maxFloor) {
+    Elevator(int minFloor, int maxFloor) {
         this.minFloor = minFloor;
         this.maxFloor = maxFloor;
     }
-    public int getCurrentFloor() {
+    private int getCurrentFloor() {
         return currentFloor;
     }
-    public void moveDown() {
+    private void moveDown() {
         currentFloor = getCurrentFloor() - 1;
     }
-    public void moveUp() {
+    private void moveUp() {
         currentFloor = getCurrentFloor() + 1;
     }
-    public void move(int floor) {
+    void move(int floor) {
         if (floor == getCurrentFloor()) {
             return;
         }

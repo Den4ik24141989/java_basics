@@ -8,6 +8,7 @@ public class Dimensions {
         this.height = height;
         this.length = length;
     }
+
     public int getWidth() {
         return width;
     }
@@ -21,7 +22,7 @@ public class Dimensions {
     }
 
     public Dimensions setWidth(int width) {
-       return new Dimensions(width, height, length);
+        return new Dimensions(width, height, length);
     }
 
     public Dimensions setHeight(int height) {
@@ -32,8 +33,7 @@ public class Dimensions {
         return new Dimensions(width, height, length);
     }
 
-    public void volume () {
-        int volume = getHeight() * getWidth() * getLength();
-        System.out.println(volume);
+    public int volume() {
+        return getHeight() * getWidth() * getLength();
     }
 }

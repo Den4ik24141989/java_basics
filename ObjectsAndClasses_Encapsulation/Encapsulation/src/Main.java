@@ -12,15 +12,13 @@
 //}
 public class Main {
     public static void main(String[] args) {
-        Dimensions dimensions = new Dimensions(5, 6, 2);
-        dimensions.volume();
-
-        Dimensions dimensionsUpdateLength = dimensions.setLength(3);
-        Dimensions dimensionsUpdateWidth = dimensions.setWidth(2);
-        Dimensions dimensionsUpdateHeight = dimensions.setHeight(1);
-
-        Dimensions copyDimensions = new Dimensions(dimensionsUpdateWidth.getWidth(), dimensionsUpdateHeight.getHeight(), dimensionsUpdateLength.getLength());
-        copyDimensions.volume();
+        CargoInformation cargoInformation = new CargoInformation(5, "Краснодар", true, "777аА", true, new Dimensions(4, 3, 2));
+        System.out.println(cargoInformation.getDeliveryAddress() + "\n" + cargoInformation.getRegistrationNumber() + "\n" + cargoInformation.getDimensions().volume());
+        CargoInformation cargoInformationAddress = cargoInformation.setDeliveryAddress("Москва");
+        CargoInformation cargoInformationRegistrationNumber = cargoInformation.setRegistrationNumber("555Ab");
+        CargoInformation cargoInformationDimensions = cargoInformation.setDimensions(new Dimensions(2, 2, 2));
+        System.out.println();
+        System.out.println(cargoInformationAddress.getDeliveryAddress() + "\n" + cargoInformationRegistrationNumber.getRegistrationNumber() + "\n" + cargoInformationDimensions.getDimensions().volume());
     }
 }
 
