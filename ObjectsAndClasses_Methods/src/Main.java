@@ -9,11 +9,17 @@ public class Main {
         denis.print("Корзина Дениса");
         denis.getTotalPrice();
         denis.getTotalWeight();
+
         Basket nastja = new Basket();
-        nastja.add("Хлебцы", 40, 1,0.15);
+        nastja.add("Хлебцы", 40, 1, 0.15);
         nastja.add("Йогурт", 38, 3, 0.1);
         nastja.print("\nКорзина Анастасии");
         nastja.getTotalPrice();
         nastja.getTotalWeight();
+
+        System.out.println("Общее количество корзин: " + Basket.getCount() +
+                "\nОбщее количество товаров всех корзин: " + Basket.getTotalCountAllBasket() +
+                "\nОбщая стоимость товаров всех корзин: " + Basket.getTotalPriceAllBasket() +
+                "\nСредняя стоимость корзины: " + Basket.getAverageCostBasket());
     }
 }
