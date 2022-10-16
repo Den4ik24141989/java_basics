@@ -2,139 +2,49 @@ package Incheritance.src;
 
 import java.util.*;
 
+public class Company {
+    private final List<Employee> employees = new ArrayList<>();
+    static int income;
 
-public class Company implements Employee {
-
-    ArrayList<String> employees = new ArrayList<>();
-    ArrayList<String> salaryStaff = new ArrayList<>();
-
-    Random random = new Random();
-    double income;
-
-
-    public void setHireAll(int count, String employee) {               //найм списка сотрудников
-        Manager manager = new Manager();
-        TopManager topManager = new TopManager();
-        Operator operator = new Operator();
-        for (int i = 1; i <= count; i++) {
-            if (employee.contains("Менеджер")) {
-                income = income + random.nextInt(115_000, 140_000);
-                salaryStaff.add("" + manager.getMonthSalary());
-            }
-            if (employee.contains("Топ-Менеджер")) {
-                if (getIncome() > 10_000_000) {
-                    salaryStaff.add("" + topManager.getMonthSalary());
-                } else {
-                    salaryStaff.add("" + getMonthSalary());
-                }
-            }
-            if (employee.contains("Оператор")) {
-                salaryStaff.add("" + operator.getMonthSalary());
-            }
-            employees.add(employee);
-        }
+    public void hire(Employee employee) {
+        this.employees.add(employee);
     }
 
-    public void setHire(String employee) {                       //найм одного сотрудника
-        Manager manager = new Manager();
-        TopManager topManager = new TopManager();
-        Operator operator = new Operator();
-        if (employee.contains("Менеджер")) {
-            income = income + random.nextInt(115_000, 140_000);
-            salaryStaff.add("" + manager.getMonthSalary());
-        }
-        if (employee.contains("Топ-Менеджер")) {
-            if (getIncome() > 10_000_000) {
-                salaryStaff.add("" + topManager.getMonthSalary());
-            } else {
-                salaryStaff.add("" + getMonthSalary());
-            }
-        }
-        if (employee.contains("Оператор")) {
-            salaryStaff.add("" + operator.getMonthSalary());
-        }
-        employees.add(employee);
+    public void hireAll(Collection<Employee> employees) {
+        this.employees.addAll(employees);
     }
 
-    public void fire(String employee) {                         //увольнение сотрудника
-        if (employee.equals("Менеджер")) {
-            income = income - random.nextInt(115_000, 140_000);
-        }
+    public void fire(Employee employee) {
         employees.remove(employee);
-        salaryStaff.remove(0);
     }
 
-    public double getIncome() {                                   //получение значения дохода компании
+    public int getIncome() {
         return income;
     }
 
-    public void getListOfEmployee() {                          //список сотрудников
-        int manager = 0;
-        int topManager = 0;
-        int operator = 0;
-        for (String list : employees) {
-            if (list.equals("Менеджер")) {
-                manager += 1;
-            }
-            if (list.equals("Топ-Менеджер")) {
-                topManager += 1;
-            }
-            if (list.equals("Оператор")) {
-                operator += 1;
-            }
+    private List<Employee> getFilteredLimitedList(int count, Comparator<Employee> comparator) {
+        List<Employee> copyList = new ArrayList<>(employees);
+        copyList.sort(comparator);
+        List<Employee> result = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            result.add(copyList.get(i));
         }
-        System.out.println("Сотрудники компании" +
-                "\nМенеджеров - " + manager +
-                "\nТоп-менеджеров - " + topManager +
-                "\nОператоров - " + operator);
+        return result;
     }
 
-    public ArrayList<String> getSalaryStaff() {
-        ArrayList<String> salaryStaff = new ArrayList<>();
-        this.salaryStaff = salaryStaff;
-        Manager manager = new Manager();
-        TopManager topManager = new TopManager();
-        Operator operator = new Operator();
-        for (String list : employees) {
-            if (list.contains("Менеджер")) {
-                salaryStaff.add("" + manager.getMonthSalary());
-            }
-            if (list.contains("Топ-Менеджер")) {
-                if (getIncome() > 10_000_000) {
-                    salaryStaff.add("" + topManager.getMonthSalary());
-                } else {
-                    salaryStaff.add("" + getMonthSalary());
-                }
-            }
-            if (list.contains("Оператор")) {
-                salaryStaff.add("" + operator.getMonthSalary());
-            }
-        }
-        return salaryStaff;
+    public int countEmployees() {
+        return employees.size();
     }
 
-
-    public void getTopSalaryStaff(int count) {          //самые высокие зарплаты в компании
-        Collections.sort(salaryStaff);
-        Collections.reverse(salaryStaff);
-        if (count < salaryStaff.size()) {
-            for (int i = 0; i < count; i++) {
-                System.out.println(salaryStaff.get(i) + "руб.");
-            }
-        }
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    public void getLowestSalaryStaff(int count) {       //самые низкие зарплаты в компании
-        Collections.sort(salaryStaff);
-        if (count < salaryStaff.size()) {
-            for (int i = 0; i < count; i++) {
-                System.out.println(salaryStaff.get(i) + "руб.");
-            }
-        }
+    public List<Employee> getTopSalaryStaff(int count) {
+        return getFilteredLimitedList(count, (o1, o2) -> o2.getMonthSalary() - o1.getMonthSalary());
     }
 
-    @Override
-    public double getMonthSalary() {
-        return fixSalary;
+    public List<Employee> getLowestSalaryStaff(int count) {
+        return getFilteredLimitedList(count, (o1, o2) -> o1.getMonthSalary() - o2.getMonthSalary());
     }
 }
