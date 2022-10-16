@@ -10,8 +10,8 @@ public class Company {
         this.employees.add(employee);
     }
 
-    public void hireAll(Collection<Employee> employees) {
-        this.employees.addAll(employees);
+    public void hireAll(Collection<Employee> employeeList) {
+        this.employees.addAll(employeeList);
     }
 
     public void fire(Employee employee) {
