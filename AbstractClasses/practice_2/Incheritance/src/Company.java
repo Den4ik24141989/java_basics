@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Company {
     private final List<Employee> employees = new ArrayList<>();
-    static int income;
+    protected static int income;
 
     public void hire(Employee employee) {
         this.employees.add(employee);
@@ -18,13 +18,13 @@ public class Company {
         employees.remove(employee);
     }
 
-    public int getIncome() {
+    public static int getIncome() {
         return income;
     }
 
     private List<Employee> getFilteredLimitedList(int count, Comparator<Employee> comparator) {
         List<Employee> copyList = new ArrayList<>(employees);
-        copyList.sort(comparator);
+        Collections.sort(copyList, comparator);
         List<Employee> result = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             result.add(copyList.get(i));

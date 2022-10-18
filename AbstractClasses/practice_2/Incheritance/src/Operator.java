@@ -1,11 +1,9 @@
 package Incheritance.src;
 
 public class Operator implements Employee {
-    String job;
-    private static final int FIX_SALARY = 30000;
+    private static final int FIX_SALARY = 30_000;
 
-    public Operator(String job) {
-        this.job = job;
+    public Operator() {
     }
 
     public int getMonthSalary() {

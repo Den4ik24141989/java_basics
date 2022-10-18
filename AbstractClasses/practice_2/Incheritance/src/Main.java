@@ -50,8 +50,8 @@ public class Main extends Company {
             Employee loser = company.getEmployees().get(index);
             String job = company.getEmployees().get(index).toString();
             String[] splitJob = job.split("@");
-            if (splitJob[0].contains("Manager")) {
-                income = company.getIncome() - ((int) (Math.random() * 25000) + 115000);
+            if (splitJob[0].contains("Incheritance.src.Manager")) {
+                Manager.MinusEarningsForCompany();
             }
             company.fire(loser);
         }
@@ -61,15 +61,15 @@ public class Main extends Company {
     private static void hireAll(Company company) {
         ArrayList<Employee> list = new ArrayList<>();
         for (int i = 0; i < 180; i++) {
-            Employee operator = new Operator("Оператор");
+            Employee operator = new Operator();
             list.add(operator);
         }
         for (int i = 0; i < 80; i++) {
-            Employee manager = new Manager("Менеджер");
+            Employee manager = new Manager();
             list.add(manager);
         }
         for (int i = 0; i < 10; i++) {
-            Employee topManager = new TopManager("Топ-Менеджер");
+            Employee topManager = new TopManager();
             list.add(topManager);
         }
         company.hireAll(list);
@@ -84,15 +84,15 @@ public class Main extends Company {
                 """);
         int enter = new Scanner(System.in).nextInt();
         if (enter == 1) {
-            Employee operator = new Operator("Оператор");
+            Employee operator = new Operator();
             company.hire(operator);
         }
         if (enter == 2) {
-            Employee manager = new Manager("Менеджер");
+            Employee manager = new Manager();
             company.hire(manager);
         }
         if (enter == 3) {
-            Employee topManager = new TopManager("Топ-Менеджер");
+            Employee topManager = new TopManager();
             company.hire(topManager);
         }
         System.out.println("Количество сотрудников в компании " + company.countEmployees());
@@ -100,14 +100,14 @@ public class Main extends Company {
 
     private static void printHighestSalaries(Company company) {
         System.out.println("Самые высокие зарплаты: ");
-        for (Employee employee : company.getTopSalaryStaff(15)) {
+        for (Employee employee : company.getTopSalaryStaff(30)) {
             System.out.println(employee.getMonthSalary() + " руб");
         }
     }
 
     private static void printLowestSalaries(Company company) {
         System.out.println("Самые низкие зарплаты: ");
-        for (Employee employee : company.getLowestSalaryStaff(15)) {
+        for (Employee employee : company.getLowestSalaryStaff(5)) {
             System.out.println(employee.getMonthSalary() + " руб");
         }
     }
