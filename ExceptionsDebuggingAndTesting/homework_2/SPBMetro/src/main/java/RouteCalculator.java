@@ -1,5 +1,4 @@
 import core.Station;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -97,6 +96,7 @@ public class RouteCalculator {
                 }
             }
         }
+        if (route.size() == 0) return null;
         return route;
     }
 
@@ -145,7 +145,6 @@ public class RouteCalculator {
                 }
             }
         }
-
         return route;
     }
 }

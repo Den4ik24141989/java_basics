@@ -55,17 +55,21 @@ public class ExceptionTests {
     @Test
     @DisplayName("Тест добавления корректных данных Customer")
     void insertCorrectData() {
-        final String name = "Василий Петров";
-        final String email = "hello@skillbox.ru";
-        final String phone = "+79991234567";
-        final String input = String.join(" ", name, email, phone);
+        try {
+            final String name = "Василий Петров";
+            final String email = "hello@skillbox.ru";
+            final String phone = "+79991234567";
+            final String input = String.join(" ", name, email, phone);
 
-        storage.addCustomer(input);
-        assertEquals(1, storage.getCount());
+            storage.addCustomer(input);
+            assertEquals(1, storage.getCount());
 
-        Customer customer = storage.getCustomer(name);
-        assertEquals(name, customer.getName());
-        assertEquals(email, customer.getEmail());
-        assertEquals(phone, customer.getPhone());
+            Customer customer = storage.getCustomer(name);
+            assertEquals(name, customer.getName());
+            assertEquals(email, customer.getEmail());
+            assertEquals(phone, customer.getPhone());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
