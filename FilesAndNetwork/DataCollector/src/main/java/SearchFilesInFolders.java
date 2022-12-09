@@ -3,27 +3,19 @@ import java.io.File;
 public class SearchFilesInFolders {
     public static void main(String[] args) {
         String folderPath = "src/main/resources/data";
-        File file = new File(folderPath);
-        getFileFolder(file);
+        getListFiles(folderPath);
     }
-
-
-    public static void getFileFolder (File folder) {
-        try {
-            if (folder.isFile()) {
-                return;
+    public static void getListFiles (String path) {
+        File file = new File(path);
+        File[] list = file.listFiles();
+        if (list == null) return;
+        for (File f : list ) {
+            if (f.isFile() ) {
+                System.out.println( "File: " + f.getName());
             }
-            int sum = 0;
-            File[] files = folder.listFiles();
-            for (File file : files) {
-                String[] name = file.getName().split(".");
-                if (name[1].equals("json") || name[1].equals("csv")) {
-                    sum += 1;
-                }
+            else {
+                getListFiles(f.getAbsolutePath());
             }
-            System.out.println(sum);
-        }catch (Exception e) {
-
         }
     }
 }
