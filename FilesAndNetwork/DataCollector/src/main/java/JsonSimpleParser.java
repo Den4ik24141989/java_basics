@@ -5,23 +5,25 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class Parser {
-    public static ArrayList<Stations> pars = new ArrayList<>();
-    public static void main(String[] args) {
-        JSONPars();
+public class JsonSimpleParser {
+    public ArrayList<Stations> pars = new ArrayList<>();
+
+    public JsonSimpleParser() {
     }
-    public static void JSONPars () {
+
+    public void JSONPars() {
         JSONParser parser = new JSONParser();
-        try {
-            Object object = parser.parse(new FileReader("/home/den/Документы/Мой курс/Gitlab/java_basics/FilesAndNetwork/DataCollector/src/main/resources/data/4/6/depths-3.json"));
-            JSONObject metroJsonObject = (JSONObject) object;
-            JSONObject stationsObj = (JSONObject) metroJsonObject.get("stations");
-            stationsObj.keySet().forEach(k -> {
-                JSONArray stationsArray = (JSONArray) stationsObj.get(k);
-                System.out.println("Линия " + k + ". Количество станций: " + stationsArray.size() + ".");
-            });
-        }
-        catch (Exception e) {
+        try (FileReader reader = new FileReader("/home/den/Документы/Мой курс/Gitlab/java_basics/FilesAndNetwork/DataCollector/src/main/resources/data/4/6/depths-3.json")) {
+            JSONArray object = (JSONArray) parser.parse(reader);
+            for (Object it : object) {
+                JSONObject stationJsonObject = (JSONObject) it;
+                String stationName = (String) stationJsonObject.get("station_name");
+                String stationDepth = (String) stationJsonObject.get("depth");
+                Stations stations = new Stations(stationName, stationDepth);
+                pars.add(stations);
+                System.out.println("Станция - " + stationName + ", глубина " + stationDepth);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
