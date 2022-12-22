@@ -1,37 +1,35 @@
 import Core.Line;
-import Core.Stations;
+import Core.Station;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import java.util.ArrayList;
+
+import java.util.*;
 
 public class ParsingHTMLMoscowMetro {
-    static ArrayList<Line> lines = new ArrayList<>();
-    static ArrayList<Stations> stations = new ArrayList<>();
+    public ArrayList<Line> lines = new ArrayList<>();
+    public ArrayList<Station> stations = new ArrayList<>();
 
-    public static void main(String[] args) {
-        String link = "https://skillbox-java.github.io/";
-        addStationMetro(link);
-        addLineMetro(link);
-        System.out.println(stations);
-    }
-
-    public static void addStationMetro(String link) {
+    public void parsingHTMLMoscowMetro (String link) {
         try {
             Document document = Jsoup.connect(link).get();
-            Elements line = document.select("span");
-            String number = "";
-            for (Element list : line) {
-                String str = list.text();
-                if (!list.attr("data-line").isEmpty()) {
-                    number = list.attr("data-line");
+            Elements elements = document.select("span");
+            String nameLine = null;
+            String numberLine = null;
+            String nameStation;
+            for (Element list : elements) {
+                if (!list.attr("data-line").isEmpty()){
+                    numberLine = list.attr("data-line");
+                    nameLine = list.text();
+                    lines.add(new Line(numberLine, nameLine));
                 }
                 if (list.attr("data-line").isEmpty()) {
-                    str = str.replaceAll("[^а-яё А-ЯЁ]", "");
-                    if (!str.isEmpty()) {
-                        Stations stations1 = new Stations(str, number);
-                        stations.add(stations1);
+                    Elements element = list.select("span.name");
+                    for (Element element1 : element) {
+                        nameStation = element1.text();
+                        boolean hasConnection = list.parentNode().childNodeSize() > 2;
+                        stations.add(new Station(nameStation, nameLine, hasConnection, numberLine));
                     }
                 }
             }
@@ -39,17 +37,15 @@ public class ParsingHTMLMoscowMetro {
             e.printStackTrace();
         }
     }
-
-    public static void addLineMetro(String link) {
-        try {
-            Document document = Jsoup.connect(link).get();
-            Elements line = document.select("span.js-metro-line");
-            for (Element list : line) {
-                Line str = new Line(list.attr("data-line"), list.text());
-                lines.add(str);
+    public void print() {
+        for (Line line : lines) {
+            System.out.println(line.getLineNumber() + ". " + line.getLineName() + ":");
+            for (Station station : stations) {
+                if (line.getLineName().equals(station.getLine())) {
+                    System.out.println("\t" + station.getName() + ", переход: " + station.isHasConnection());
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
+

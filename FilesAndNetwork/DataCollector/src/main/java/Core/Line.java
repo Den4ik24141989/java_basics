@@ -8,9 +8,16 @@ public class Line {
         this.lineName = lineName;
         this.lineNumber = lineNumber;
     }
-    @Override
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public String getLineNumber() {
+        return lineNumber;
+    }
+
     public String toString () {
-        String str = lineNumber + " " + lineName + "\n";
-        return str;
+        return lineNumber + " " + lineName + "\n";
     }
 }
