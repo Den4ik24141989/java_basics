@@ -1,17 +1,29 @@
 import Core.Line;
 import Core.Station;
+import lombok.Data;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.*;
+import java.util.ArrayList;
+@Data
+public class ParserHTML {
+    public ArrayList<Line> lineList = new ArrayList<>();
+    public ArrayList<Station> stationList = new ArrayList<>();
 
-public class ParsingHTMLMoscowMetro {
-    public ArrayList<Line> lines = new ArrayList<>();
-    public ArrayList<Station> stations = new ArrayList<>();
-
-    public void parsingHTMLMoscowMetro (String link) {
+    public void getLineList(String link) {
+        try {
+            Document document = Jsoup.connect(link).get();
+            Elements elements = document.select("span.js-metro-line");
+            for (Element list : elements) {
+                lineList.add(new Line(list.text(), list.attr("data-line")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void getStationList(String link) {
         try {
             Document document = Jsoup.connect(link).get();
             Elements elements = document.select("span");
@@ -19,17 +31,17 @@ public class ParsingHTMLMoscowMetro {
             String numberLine = null;
             String nameStation;
             for (Element list : elements) {
-                if (!list.attr("data-line").isEmpty()){
+                if (!list.attr("data-line").isEmpty()) {
                     numberLine = list.attr("data-line");
                     nameLine = list.text();
-                    lines.add(new Line(numberLine, nameLine));
+                    lineList.add(new Line(nameLine, numberLine));
                 }
                 if (list.attr("data-line").isEmpty()) {
                     Elements element = list.select("span.name");
                     for (Element element1 : element) {
                         nameStation = element1.text();
                         boolean hasConnection = list.parentNode().childNodeSize() > 2;
-                        stations.add(new Station(nameStation, nameLine, hasConnection, numberLine));
+                        stationList.add(new Station(nameStation, numberLine, nameLine, null, null, hasConnection));
                     }
                 }
             }
@@ -37,15 +49,4 @@ public class ParsingHTMLMoscowMetro {
             e.printStackTrace();
         }
     }
-    public void print() {
-        for (Line line : lines) {
-            System.out.println(line.getLineNumber() + ". " + line.getLineName() + ":");
-            for (Station station : stations) {
-                if (line.getLineName().equals(station.getLine())) {
-                    System.out.println("\t" + station.getName() + ", переход: " + station.isHasConnection());
-                }
-            }
-        }
-    }
 }
-

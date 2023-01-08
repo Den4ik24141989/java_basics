@@ -1,23 +1,18 @@
 package Core;
 
+import lombok.Data;
+
+@Data
+
 public class Line {
-    String lineName;
-    String lineNumber;
+    private String name;
+    private String number;
 
-    public Line(String lineNumber, String lineName) {
-        this.lineName = lineName;
-        this.lineNumber = lineNumber;
+    public Line(String name, String number) {
+        this.name = name;
+        this.number = number;
     }
-
-    public String getLineName() {
-        return lineName;
-    }
-
-    public String getLineNumber() {
-        return lineNumber;
-    }
-
     public String toString () {
-        return lineNumber + " " + lineName + "\n";
+        return number + " " + name + "\n";
     }
 }
