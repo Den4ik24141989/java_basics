@@ -14,7 +14,7 @@ public class Main {
 
         for (int i = 0; i < 4; i++) {
             File[] file;
-            if (files.length - (quarter * i) < quarter) {
+            if (files.length - (quarter * i) < quarter * 2) {
                 file = new File[files.length - (quarter * i)];
             } else {
                 file = new File[quarter];
