@@ -26,7 +26,6 @@ public class Account {
         isBlocked = true;
     }
 
-
     public boolean getStatus() {
         return isBlocked;
     }

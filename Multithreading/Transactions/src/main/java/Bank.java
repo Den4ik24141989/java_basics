@@ -52,10 +52,6 @@ public class Bank {
         return accounts.get(accountNum).getMoney();
     }
 
-    public long getBankBalanceSheet() {
-        return getSumAllAccounts();
-    }
-
     public long getSumAllAccounts() {
         AtomicLong sumAllAccounts = new AtomicLong();
         accounts.forEach((s, account) -> {
