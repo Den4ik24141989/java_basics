@@ -1,41 +1,33 @@
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
 public class Loader {
 
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
+        FileOutputStream writer1 = new FileOutputStream("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers1.txt");
+        FileOutputStream writer2 = new FileOutputStream("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers2.txt");
+        FileOutputStream writer3 = new FileOutputStream("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers3.txt");
+        FileOutputStream writer4 = new FileOutputStream("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers4.txt");
 
-        FileOutputStream writer = new FileOutputStream("res/numbers.txt");
+//        PrintWriter writer1 = new PrintWriter("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers1.txt");
+//        PrintWriter writer2 = new PrintWriter("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers2.txt");
+//        PrintWriter writer3 = new PrintWriter("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers3.txt");
+//        PrintWriter writer4 = new PrintWriter("/home/den/Документы/Мой курс/Gitlab/java_basics/Performance/CarNumberGenerator/res/numbers4.txt");
+
 
         char letters[] = {'У', 'К', 'Е', 'Н', 'Х', 'В', 'А', 'Р', 'О', 'С', 'М', 'Т'};
-        for (int number = 1; number < 1000; number++) {
-            int regionCode = 199;
-            for (char firstLetter : letters) {
-                for (char secondLetter : letters) {
-                    for (char thirdLetter : letters) {
-                        String carNumber = firstLetter + padNumber(number, 3) +
-                            secondLetter + thirdLetter + padNumber(regionCode, 2);
-                        writer.write(carNumber.getBytes());
-                        writer.write('\n');
-                    }
-                }
-            }
-        }
 
-        writer.flush();
-        writer.close();
+        NumberGenerator numberGenerator1 = new NumberGenerator(start, 1, 25, writer1);
+        numberGenerator1.start();
 
-        System.out.println((System.currentTimeMillis() - start) + " ms");
-    }
+        NumberGenerator numberGenerator2 = new NumberGenerator(start, 26, 50, writer2);
+        numberGenerator2.start();
 
-    private static String padNumber(int number, int numberLength) {
-        String numberStr = Integer.toString(number);
-        int padSize = numberLength - numberStr.length();
+        NumberGenerator numberGenerator3 = new NumberGenerator(start, 51, 75, writer3);
+        numberGenerator3.start();
 
-        for (int i = 0; i < padSize; i++) {
-            numberStr = '0' + numberStr;
-        }
-
-        return numberStr;
+        NumberGenerator numberGenerator4 = new NumberGenerator(start, 76, 99, writer4);
+        numberGenerator4.start();
     }
 }
