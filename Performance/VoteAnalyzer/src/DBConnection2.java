@@ -1,6 +1,6 @@
 import java.sql.*;
 
-public class DBConnection {
+public class DBConnection2 {
 
     private static Connection connection;
 
@@ -24,8 +24,7 @@ public class DBConnection {
                         "name TINYTEXT NOT NULL, " +
                         "birthDate DATE NOT NULL, " +
                         "`count` INT NOT NULL, " +
-                        "PRIMARY KEY(id), " +
-                        "UNIQUE KEY name_date(birthDate, name(50)))");
+                        "PRIMARY KEY(id))");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -35,16 +34,15 @@ public class DBConnection {
 
     public static void executeMultiInsert() throws SQLException {
         String sql = "INSERT INTO voter_count(name, birthDate, `count`) " +
-                "VALUES" + insertQuery.toString() +
-                "ON DUPLICATE KEY UPDATE `count`=`count` + 1";
-        DBConnection.getConnection().createStatement().execute(sql);
+                "VALUES" + insertQuery.toString();
+        DBConnection2.getConnection().createStatement().execute(sql);
     }
 
-    public static void countVoter(String name, String birthDay) throws SQLException {
+    public static void countVoter(String name, String birthDay, String count) throws SQLException {
         birthDay = birthDay.replace('.', '-');
 
         insertQuery.append((insertQuery.length() == 0 ? "" : ", ") +
-                "('" + name + "', '" + birthDay + "', 1)");
+                "('" + name + "', '" + birthDay + "', " + count + " )");
         if (insertQuery.length() > 1_000_000) {
             countMultiInsert++;
             executeMultiInsert();
@@ -55,7 +53,7 @@ public class DBConnection {
 
     public static void printVoterCounts() throws SQLException {
         String sql = "SELECT name, birthDate, `count` FROM voter_count WHERE `count` > 1";
-        ResultSet rs = DBConnection.getConnection().createStatement().executeQuery(sql);
+        ResultSet rs = DBConnection2.getConnection().createStatement().executeQuery(sql);
         while (rs.next()) {
             System.out.println("\t" + rs.getString("name") + " (" +
                     rs.getString("birthDate") + ") - " + rs.getInt("count"));

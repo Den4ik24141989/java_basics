@@ -2,7 +2,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 
-public class Loader {
+public class Loader2 {
 
     public static void main(String[] args) throws Exception {
         String fileName = "res/data-18M.xml";
@@ -10,11 +10,16 @@ public class Loader {
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
-        XMLHandler handler = new XMLHandler();
+        XMLHandler2 handler = new XMLHandler2();
         parser.parse(new File(fileName), handler);
-        DBConnection.executeMultiInsert();
+        for (Voter voter : handler.getList().keySet()) {
+            String count = "" + handler.getList().get(voter);
+            DBConnection2.countVoter(voter.getName(), voter.getBirthDate(), count);
+        }
+
+        DBConnection2.executeMultiInsert();
 
         System.out.println("Время выполнения: " + (System.currentTimeMillis() - start) + " ms");
-        DBConnection.printVoterCounts();
+        DBConnection2.printVoterCounts();
     }
 }

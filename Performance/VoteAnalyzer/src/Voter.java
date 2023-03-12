@@ -1,41 +1,40 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Objects;
 
 public class Voter {
-
     private String name;
-    private Date birthDay;
+    private String birthDate;
 
-    public Voter(String name, Date birthDay) {
+    public Voter(String name, String birthDate) {
         this.name = name;
-        this.birthDay = birthDay;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Voter voter = (Voter) obj;
-        return name.equals(voter.name) && birthDay.equals(voter.birthDay);
-    }
-
-    @Override
-    public int hashCode() {
-        long code = name.hashCode() + birthDay.hashCode();
-        while (code > Integer.MAX_VALUE) {
-            code = code / 10;
-        }
-        return (int) code;
-    }
-
-    public String toString() {
-        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy.MM.dd");
-        return name + " (" + dayFormat.format(birthDay) + ")";
+        this.birthDate = birthDate;
     }
 
     public String getName() {
         return name;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Voter)) return false;
+        Voter voter = (Voter) o;
+        return Objects.equals(name, voter.name) && Objects.equals(birthDate, voter.birthDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, birthDate);
     }
 }
