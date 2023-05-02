@@ -7,13 +7,17 @@ import searchengine.dto.statistics.IsIndexingProcessRunning;
 import searchengine.parsers.SiteParser;
 import searchengine.repository.Repositories;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
 @Service
 public class IndexingServiceImpl implements IndexingService{
     private final SitesList sitesList;
     private final Repositories repositories;
-    IsIndexingProcessRunning isIndexingProcessRunning;
+    private IsIndexingProcessRunning isIndexingProcessRunning;
+    private Executor executor;
+    private final int processorCoreCount = Runtime.getRuntime().availableProcessors();
 
     public IndexingServiceImpl(SitesList sitesList, Repositories repositories, IsIndexingProcessRunning isIndexingProcessRunning) {
         this.sitesList = sitesList;
@@ -44,10 +48,10 @@ public class IndexingServiceImpl implements IndexingService{
     }
 
     public void startIndexing() {
-        isIndexingProcessRunning.setForkJoinPool(new ForkJoinPool());
         repositories.clearDB();
+        executor = Executors.newFixedThreadPool(processorCoreCount);
         for (Site site : sitesList.getSites()) {
-            isIndexingProcessRunning.getForkJoinPool().execute(new SiteParser(site, repositories, isIndexingProcessRunning));
+            executor.execute(new SiteParser(site, repositories, isIndexingProcessRunning));
         }
     }
 }

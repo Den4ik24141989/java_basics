@@ -1,5 +1,7 @@
 package searchengine.parsers;
 
+import searchengine.model.SiteModel;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NodeUrl {
@@ -7,20 +9,24 @@ public class NodeUrl {
     private String urlPage;
     private volatile CopyOnWriteArrayList<NodeUrl> children;
 
+    private volatile SiteModel siteModel;
+
     public NodeUrl(String urlPage) {
         this.urlPage = urlPage;
         parent = null;
         children = new CopyOnWriteArrayList<>();
     }
 
-    public synchronized void addChild(NodeUrl element) {
+    public synchronized boolean addChild(NodeUrl element) {
         NodeUrl root = getRootElement();
         if (!root.contains(element.getUrl())) {
             element.setParent(this);
             children.add(element);
+            return true;
 //            System.out.println(element.getUrl());
-        }
+        } else return false;
     }
+
 
     private boolean contains(String url) {
         if (this.urlPage.equals(url)) {
@@ -50,5 +56,13 @@ public class NodeUrl {
 
     public CopyOnWriteArrayList<NodeUrl> getChildren() {
         return children;
+    }
+
+    public SiteModel getSiteModel() {
+        return siteModel;
+    }
+
+    public synchronized void setSiteModel(SiteModel siteModel) {
+        this.siteModel = siteModel;
     }
 }

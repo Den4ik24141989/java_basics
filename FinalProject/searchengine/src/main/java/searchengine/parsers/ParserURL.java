@@ -5,36 +5,46 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
+import searchengine.model.PageModel;
+import searchengine.model.SiteModel;
 import searchengine.repository.Repositories;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.RecursiveAction;
 import java.util.regex.Pattern;
 
 import static java.lang.Thread.sleep;
 
-public class NodeUrlRecursiveAction extends RecursiveAction {
+public class ParserURL extends RecursiveAction {
     private final NodeUrl node;
-//    @Autowired
-//    private final Repositories repositories;
+    private Repositories repositories;
 
-    public NodeUrlRecursiveAction(NodeUrl node) {
+    public ParserURL(NodeUrl node, Repositories repositories) {
         this.node = node;
+        this.repositories = repositories;
     }
 
     @Override
     protected void compute() {
         try {
+            SiteModel siteModel = repositories.getSiteModel(node.getRootElement().getUrl());
             sleep(100);
             Connection connection = Jsoup.connect(node.getUrl());
             Document page = connection.get();
+
             Elements elements = page.select("a[href]");
             for (Element element : elements) {
                 String childUrl = element.absUrl("href")
                         .replaceAll("\\?.+", "");
-                if (isCorrectUrl(childUrl)) {
-                    node.addChild(new NodeUrl(childUrl));
+                if (isCorrectUrl(childUrl) && node.addChild(new NodeUrl(childUrl))) {
+                    siteModel.setStatusTime(LocalDateTime.now());
+                    repositories.addOrUpdateSiteInDB(siteModel);
+                    PageModel pageModel = new PageModel();
+                    pageModel.setSiteId(siteModel);
+                    pageModel.setContentHTMLCode("content");
+                    pageModel.setCodeHTTPResponse(200);
+                    repositories.addPage(pageModel);
                 }
             }
         } catch (IOException | InterruptedException e) {
@@ -42,7 +52,7 @@ public class NodeUrlRecursiveAction extends RecursiveAction {
         }
 
         for (NodeUrl child : node.getChildren()) {
-            NodeUrlRecursiveAction task = new NodeUrlRecursiveAction(child);
+            ParserURL task = new ParserURL(child, repositories);
             task.compute();
         }
     }
