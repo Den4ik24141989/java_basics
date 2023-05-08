@@ -7,9 +7,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class NodeUrl {
     private volatile NodeUrl parent;
     private String urlPage;
+    private String content;
+    private int code;
     private volatile CopyOnWriteArrayList<NodeUrl> children;
-
-    private volatile SiteModel siteModel;
+//    private volatile SiteModel siteModel;
 
     public NodeUrl(String urlPage) {
         this.urlPage = urlPage;
@@ -21,10 +22,13 @@ public class NodeUrl {
         NodeUrl root = getRootElement();
         if (!root.contains(element.getUrl())) {
             element.setParent(this);
+            element.setContent(content);
+            element.setCode(code);
             children.add(element);
             return true;
-//            System.out.println(element.getUrl());
-        } else return false;
+        }
+
+        return false;
     }
 
 
@@ -58,11 +62,27 @@ public class NodeUrl {
         return children;
     }
 
-    public SiteModel getSiteModel() {
-        return siteModel;
+//    public SiteModel getSiteModel() {
+//        return siteModel;
+//    }
+
+    public String getContent() {
+        return content;
     }
 
-    public synchronized void setSiteModel(SiteModel siteModel) {
-        this.siteModel = siteModel;
+    public void setContent(String content) {
+        this.content = content;
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+//    public synchronized void setSiteModel(SiteModel siteModel) {
+//        this.siteModel = siteModel;
+//    }
 }

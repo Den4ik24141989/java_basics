@@ -5,13 +5,15 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "site")
 public class SiteModel implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "INT NOT NULL")
     private int id;
 
@@ -30,4 +32,7 @@ public class SiteModel implements Serializable {
 
     @Column(name = "name",nullable = false)
     private String nameSite;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "siteId", cascade = CascadeType.PERSIST)
+    protected List<PageModel> pageList = new ArrayList<>();
 }

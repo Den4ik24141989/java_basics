@@ -11,10 +11,10 @@ import java.io.Serializable;
 @Table(name = "page")
 public class PageModel implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "site_id", columnDefinition = "INT NOT NULL")
     @OnDelete(action = OnDeleteAction.CASCADE)                //каскадное удаление в БД
     private SiteModel siteId;
