@@ -3,15 +3,9 @@ package searchengine.repository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import searchengine.config.Site;
 import searchengine.config.SitesList;
 import searchengine.model.PageModel;
 import searchengine.model.SiteModel;
-
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
 @Getter
@@ -49,9 +43,5 @@ public class Repositories {
 
     public void clearDB () {
         siteRepository.deleteAll();
-    }
-
-    public void saveAllPageInDB (CopyOnWriteArrayList<PageModel> listIndexedPages) {
-        pageRepository.saveAll(listIndexedPages);
     }
 }

@@ -10,11 +10,12 @@ import java.util.concurrent.ForkJoinPool;
 
 @Component
 public class IndexingProcess {
-    private volatile CopyOnWriteArrayList<PageModel> listIndexedPages;
-    private volatile ConcurrentHashMap<String, SiteModel> sites;
+    private final CopyOnWriteArrayList<PageModel> listIndexedPages;
+    private final ConcurrentHashMap<String, SiteModel> sites;
     private int doneCountSite;
     private ForkJoinPool forkJoinPool;
-    boolean isIndexingProcessRunning;
+    private boolean isIndexingProcessRunning;
+    private boolean Interrupted;
 
     public IndexingProcess() {
         listIndexedPages = new CopyOnWriteArrayList<>();
@@ -53,20 +54,32 @@ public class IndexingProcess {
         isIndexingProcessRunning = indexingProcessRunning;
     }
 
+    public boolean isInterrupted() {
+        return Interrupted;
+    }
+
+    public void setInterrupted(boolean interrupted) {
+        Interrupted = interrupted;
+    }
+
     public boolean contains(String url) {
         for (PageModel pageModel : listIndexedPages) {
             if (pageModel.getPathPageNotNameSite().contains(url))
-                return false;
+                return true;
         }
-        return true;
+        return false;
     }
 
     public void addSiteModel(String rootURL, SiteModel siteModel) {
         sites.put(rootURL, siteModel);
     }
+
+    public ConcurrentHashMap<String, SiteModel> getSites() {
+        return sites;
+    }
+
     public SiteModel getSiteModel (String rootSiteURL) {
-        SiteModel siteModel = sites.get(rootSiteURL);
-        return siteModel;
+        return sites.get(rootSiteURL);
     }
 
     public void addInListIndexedPages (PageModel pageModel) {

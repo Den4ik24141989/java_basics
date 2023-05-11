@@ -8,6 +8,7 @@ import searchengine.repository.Repositories;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 @Service
 public class IndexingServiceImpl implements IndexingService{
@@ -33,7 +34,8 @@ public class IndexingServiceImpl implements IndexingService{
     @Override
     public boolean stopIndexing() {
         if (isProcessRunning()) {
-            while (!indexingProcess.getForkJoinPool().isTerminated()){
+            indexingProcess.setInterrupted(true);
+            while (!indexingProcess.getForkJoinPool().isTerminated()) {
                 indexingProcess.getForkJoinPool().shutdownNow();
             }
             return true;
@@ -46,7 +48,9 @@ public class IndexingServiceImpl implements IndexingService{
     }
 
     public void startIndexing() {
+        indexingProcess.setForkJoinPool(new ForkJoinPool());
         indexingProcess.getListIndexedPages().clear();
+        indexingProcess.getSites().clear();
         indexingProcess.setDoneSite(0);
         repositories.clearDB();
         Executor executor = Executors.newFixedThreadPool(processorCoreCount);

@@ -1,16 +1,12 @@
 package searchengine.parsers;
 
-import searchengine.model.SiteModel;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NodeUrl {
     private volatile NodeUrl parent;
-    private String urlPage;
-    private String content;
-    private int code;
-    private volatile CopyOnWriteArrayList<NodeUrl> children;
-//    private volatile SiteModel siteModel;
+    private final String urlPage;
+    private final CopyOnWriteArrayList<NodeUrl> children;
 
     public NodeUrl(String urlPage) {
         this.urlPage = urlPage;
@@ -18,19 +14,13 @@ public class NodeUrl {
         children = new CopyOnWriteArrayList<>();
     }
 
-    public synchronized boolean addChild(NodeUrl element) {
+    public synchronized void addChild(NodeUrl element) {
         NodeUrl root = getRootElement();
         if (!root.contains(element.getUrl())) {
             element.setParent(this);
-            element.setContent(content);
-            element.setCode(code);
             children.add(element);
-            return true;
         }
-
-        return false;
     }
-
 
     private boolean contains(String url) {
         if (this.urlPage.equals(url)) {
@@ -40,7 +30,6 @@ public class NodeUrl {
             if (child.contains(url))
                 return true;
         }
-
         return false;
     }
 
@@ -62,27 +51,4 @@ public class NodeUrl {
         return children;
     }
 
-//    public SiteModel getSiteModel() {
-//        return siteModel;
-//    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-//    public synchronized void setSiteModel(SiteModel siteModel) {
-//        this.siteModel = siteModel;
-//    }
 }

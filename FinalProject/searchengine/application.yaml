@@ -17,6 +17,10 @@ spring:
 
 indexing-settings:
   sites:
+    - url: https://usa.one/
+      name: usa
+    - url: https://www.lenta.ru
+      name: Лента.ру
     - url: https://centrkinomir.ru/
       name: Centrkinomir
     - url: https://www.playback.ru/
