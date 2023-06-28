@@ -8,51 +8,49 @@ import searchengine.dto.statistics.DetailedStatisticsItem;
 import searchengine.dto.statistics.StatisticsData;
 import searchengine.dto.statistics.StatisticsResponse;
 import searchengine.dto.statistics.TotalStatistics;
+import searchengine.model.LemmaModel;
+import searchengine.model.PageModel;
+import searchengine.model.SiteModel;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final Random random = new Random();
     private final SitesList sites;
+    private final WorkingWithDataService workingWithDataService;
 
     @Override
     public StatisticsResponse getStatistics() {
-        String[] statuses = { "INDEXED", "FAILED", "INDEXING" };
-        String[] errors = {
-                "Ошибка индексации: главная страница сайта не доступна",
-                "Ошибка индексации: сайт не доступен",
-                ""
-        };
-
         TotalStatistics total = new TotalStatistics();
-        total.setSites(sites.getSites().size());
         total.setIndexing(true);
 
         List<DetailedStatisticsItem> detailed = new ArrayList<>();
         List<Site> sitesList = sites.getSites();
-        for(int i = 0; i < sitesList.size(); i++) {
-            Site site = sitesList.get(i);
+
+        for (Site site : sitesList) {
+            SiteModel siteModel = workingWithDataService.getSiteRepository().findByUrl(site.getUrl());
+            if (siteModel == null) {
+                continue;
+            }
             DetailedStatisticsItem item = new DetailedStatisticsItem();
-            item.setName(site.getName());
-            item.setUrl(site.getUrl());
-            int pages = random.nextInt(1_000);
-            int lemmas = pages * random.nextInt(1_000);
+            int pages = getCountPageSite(siteModel.getId());
+            int lemmas = getCountLemmasSite(siteModel.getId());
+            item.setName(siteModel.getName());
+            item.setUrl(siteModel.getUrl());
             item.setPages(pages);
             item.setLemmas(lemmas);
-            item.setStatus(statuses[i % 3]);
-            item.setError(errors[i % 3]);
-            item.setStatusTime(System.currentTimeMillis() -
-                    (random.nextInt(10_000)));
+            item.setStatus(siteModel.getStatus().toString());
+            item.setError(siteModel.getLastError());
+            item.setStatusTime(siteModel.getStatusTime().toEpochSecond(ZoneOffset.UTC) * 1000);
+            total.setSites(total.getSites() + 1);
             total.setPages(total.getPages() + pages);
             total.setLemmas(total.getLemmas() + lemmas);
             detailed.add(item);
         }
-
         StatisticsResponse response = new StatisticsResponse();
         StatisticsData data = new StatisticsData();
         data.setTotal(total);
@@ -60,5 +58,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         response.setStatistics(data);
         response.setResult(true);
         return response;
+    }
+
+    private int getCountPageSite (int siteId) {
+        List<PageModel> listPages = workingWithDataService.getPageRepository().findAllBySiteId(siteId);
+        return listPages.size();
+    }
+    private int getCountLemmasSite (int siteId) {
+        List<LemmaModel> listLemmas = workingWithDataService.getLemmaRepository().findAllBySiteId(siteId);
+        return listLemmas.size();
     }
 }

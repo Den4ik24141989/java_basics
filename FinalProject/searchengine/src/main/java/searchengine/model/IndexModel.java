@@ -1,6 +1,7 @@
 package searchengine.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -9,21 +10,24 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "`index`")
+@EqualsAndHashCode
+@Table(name = "`index_search`")
 public class IndexModel implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "page_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)                //каскадное удаление в БД
-    private PageModel pageId;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "lemma_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "lemma_id", nullable = false, foreignKey = @ForeignKey(name = "LEMMA_ID_FK"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private LemmaModel lemmaId;
 
-    @Column(name = "`rank`", columnDefinition = "FLOAT NOT NULL")
-    private float rank;
+    @ManyToOne
+    @JoinColumn(name = "page_id", nullable = false, foreignKey = @ForeignKey(name = "PAGE_ID_FK"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private PageModel pageId;
+
+    @Column(name = "`rank`", nullable = false, columnDefinition = "FLOAT NOT NULL")
+    private int rank;
 }

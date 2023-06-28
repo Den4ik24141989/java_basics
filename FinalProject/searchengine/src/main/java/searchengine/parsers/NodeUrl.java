@@ -1,11 +1,14 @@
 package searchengine.parsers;
 
 
+import lombok.Getter;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NodeUrl {
     private volatile NodeUrl parent;
     private final String urlPage;
+    @Getter
     private final CopyOnWriteArrayList<NodeUrl> children;
 
     public NodeUrl(String urlPage) {
@@ -45,10 +48,6 @@ public class NodeUrl {
 
     public NodeUrl getRootElement() {
         return parent == null ? this : parent.getRootElement();
-    }
-
-    public CopyOnWriteArrayList<NodeUrl> getChildren() {
-        return children;
     }
 
 }
