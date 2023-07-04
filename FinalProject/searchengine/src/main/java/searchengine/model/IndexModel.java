@@ -28,6 +28,15 @@ public class IndexModel implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PageModel pageId;
 
-    @Column(name = "`rank`", nullable = false, columnDefinition = "FLOAT NOT NULL")
+    @Column(name = "`rank`", nullable = false)
     private int rank;
+
+    @Override
+    public String toString() {
+        return "IndexModel{" +
+                ", lemmaId=" + lemmaId.getLemma() +
+                ", rank=" + rank +
+                "page" + pageId.getSite().getUrl() + pageId.getPathPageNotNameSite() +
+                '}';
+    }
 }

@@ -55,7 +55,7 @@ public class LemmaFinder {
         return lemmas;
     }
 
-    public Set<String> getLemmaSet(String text) {
+    public Set<String> getNormalFormWords(String text) {
         String[] textArray = arrayContainsRussianWords(text);
         Set<String> lemmaSet = new HashSet<>();
         for (String word : textArray) {

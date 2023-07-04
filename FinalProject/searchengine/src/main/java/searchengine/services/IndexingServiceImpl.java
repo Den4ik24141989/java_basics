@@ -20,7 +20,7 @@ public class IndexingServiceImpl implements IndexingService {
     private final WorkingWithDataService workingWithDataService;
     private final IndexingProcessService indexingProcessService;
     private final int processorCoreCount = Runtime.getRuntime().availableProcessors();
-    private final Executor executor = Executors.newFixedThreadPool(processorCoreCount);
+    private Executor executor;
 
     @Override
     public boolean startFullIndexing() {
@@ -45,6 +45,7 @@ public class IndexingServiceImpl implements IndexingService {
             log.info(url + " - данная страница находится за пределами сайтов, указанных в конфигурационном файле");
             return false;
         }
+        executor = Executors.newSingleThreadExecutor();
         indexingProcessService.enableSingleIndexing(url);
         PageModel pageModel = workingWithDataService.getPageRepository().findByPath(pathPageNotNameSite);
         if (pageModel != null) {
@@ -97,6 +98,7 @@ public class IndexingServiceImpl implements IndexingService {
     }
 
     private void executeFullIndexing () {
+        executor = Executors.newFixedThreadPool(processorCoreCount);
         for (Site site : workingWithDataService.getSitesList().getSites()) {
             SiteModel siteModel = workingWithDataService.createAndSaveSite(site);
             executor.execute(new Parser(siteModel, workingWithDataService, indexingProcessService));

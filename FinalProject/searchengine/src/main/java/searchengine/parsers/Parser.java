@@ -25,15 +25,15 @@ public class Parser implements Runnable {
         if (indexingProcessService.isFullIndexing()) {
             try {
                 fullIndexing();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (Exception ex) {
+                log.info(siteModel.getUrl() + " " + ex.getMessage());
             }
         } else {
             singlePage(indexingProcessService.getSinglePageUrl());
         }
     }
 
-    private void fullIndexing() throws IOException {
+    private void fullIndexing() {
         NodeUrl nodeUrl = new NodeUrl(siteModel.getUrl());
         indexingProcessService.addSite(siteModel);
         log.info(siteModel.getUrl() + " " + "индексация началась");
@@ -48,9 +48,7 @@ public class Parser implements Runnable {
 
         if (indexingProcessService.isInterrupted()) {
             String message = "индексация остановлена пользователем";
-            if (siteModel.getLastError() == null) {
-                siteModel.setLastError(message);
-            }
+            siteModel.setLastError(message);
             siteModel.setStatus(StatusEnum.FAILED);
             workingWithDataService.updateTimeAndSaveSite(siteModel);
             log.info(siteModel.getUrl() + " " + message);
@@ -79,7 +77,7 @@ public class Parser implements Runnable {
             indexingProcessService.defaultSet();
             log.info(indexingProcessService.getSinglePageUrl() + " страница добавлена/обновлена");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.info(siteModel.getUrl() + " " + e.getMessage());
         }
     }
 }

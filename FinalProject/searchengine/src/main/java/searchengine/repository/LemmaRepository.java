@@ -13,6 +13,9 @@ public interface LemmaRepository extends JpaRepository<LemmaModel, Integer> {
     @Query(value = "SELECT * FROM lemma WHERE lemma=:lemma AND site_id=:site_id", nativeQuery = true)
     LemmaModel findAllByLemmaAndSiteId(@Param("lemma") String lemma, @Param("site_id") int siteId);
 
+    @Query(value = "SELECT * FROM lemma WHERE lemma=:lemma AND site_id=:site_id", nativeQuery = true)
+    List <LemmaModel> findAllByLemmaAndSite(@Param("lemma") String lemma, @Param("site_id") int siteId);
+
     @Query(value = "SELECT * FROM lemma WHERE id=:id", nativeQuery = true)
     LemmaModel findById(@Param("id") int id);
 

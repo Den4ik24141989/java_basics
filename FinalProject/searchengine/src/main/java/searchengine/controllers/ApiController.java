@@ -30,7 +30,8 @@ public class ApiController {
             "Некорректная ссылка",
             "Данная страница находится за пределами сайтов, указанных в конфигурационном файле",
             "Индексация не запущена",
-            "Задан пустой поисковый запрос"
+            "Задан пустой поисковый запрос",
+            "Указанная страница не найдена"
     };
     @GetMapping("/startIndexing")
     public ResponseEntity<Object> startIndexing() {
@@ -78,10 +79,16 @@ public class ApiController {
                                           @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
                                           @RequestParam(name = "limit", required = false, defaultValue = "20") int limit) throws IOException {
         if (query.isEmpty()) {
+            log.info(errors[4]);
             return new ResponseEntity<>(new BadRequest(false, errors[4]),
                     HttpStatus.BAD_REQUEST);
         }
-        searchService.searchAllSites(query, offset, limit);
-        return ResponseEntity.ok(searchService.getStatistics());
+        SearchResults searchResults = searchService.getStatistics(query, site, offset, limit);
+        if (searchResults == null) {
+            log.info(errors[5] + " - " + query);
+            return new ResponseEntity<>(new BadRequest(false, errors[5]),
+                    HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(searchResults);
     }
 }

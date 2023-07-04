@@ -62,7 +62,9 @@ public class ParserURL extends RecursiveAction {
         } catch (Exception e) {
             workingWithDataService.savePageException(node, siteModel, e);
             siteModel.setLastError(e.getMessage());
-            siteModel.setStatus(StatusEnum.FAILED);
+            if (node.getUrl().equals(node.getRootElement())) {
+                siteModel.setStatus(StatusEnum.FAILED);
+            }
             workingWithDataService.updateTimeAndSaveSite(siteModel);
             log.info(siteModel.getUrl() + " " + e.getMessage());
         }

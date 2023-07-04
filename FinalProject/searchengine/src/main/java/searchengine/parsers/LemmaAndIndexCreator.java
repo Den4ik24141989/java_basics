@@ -45,7 +45,7 @@ public class LemmaAndIndexCreator {
         lemmaRepository.save(lemmaModel);
         return lemmaModel;
     }
-    private LemmaModel createLemma (String word, PageModel pageModel) {
+    private static LemmaModel createLemma (String word, PageModel pageModel) {
         LemmaModel lemmaModel = new LemmaModel();
         lemmaModel.setLemma(word);
         lemmaModel.setFrequency(1);
@@ -53,7 +53,7 @@ public class LemmaAndIndexCreator {
         return lemmaModel;
     }
 
-    private IndexModel createIndex(LemmaModel lemmaModel, PageModel pageModel, int rank) {
+    private static IndexModel createIndex(LemmaModel lemmaModel, PageModel pageModel, int rank) {
         IndexModel indexModel = new IndexModel();
         indexModel.setRank(rank);
         indexModel.setLemmaId(lemmaModel);

@@ -30,7 +30,7 @@ public class PageModel implements Serializable {
     @Column(name = "code",nullable = false)
     private int codeHTTPResponse;
 
-    @Column(name = "content",columnDefinition = "MEDIUMTEXT NOT NULL") //@Column(name = "content", nullable = false, columnDefinition = "mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci")
+    @Column(name = "content",columnDefinition = "MEDIUMTEXT NOT NULL")
     private String contentHTMLCode;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lemma", cascade = CascadeType.PERSIST)

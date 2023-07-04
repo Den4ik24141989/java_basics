@@ -47,7 +47,7 @@ public class WorkingWithDataService {
         this.siteRepository.save(siteModel);
     }
 
-    public void savePageInterruptedException(NodeUrl node, SiteModel siteModel, IndexingProcessService indexingProcessService) {
+    public synchronized void savePageInterruptedException(NodeUrl node, SiteModel siteModel, IndexingProcessService indexingProcessService) {
         String pathPageNotNameSite = setPathPageNotNameSite(node);
         PageModel pageModel = new PageModel();
         pageModel.setSite(siteModel);
@@ -59,7 +59,7 @@ public class WorkingWithDataService {
         }
     }
 
-    public void savePageException(NodeUrl node, SiteModel siteModel, Exception e) {
+    public synchronized void savePageException(NodeUrl node, SiteModel siteModel, Exception e) {
         PageModel pageModel = new PageModel();
         pageModel.setSite(siteModel);
         pageModel.setPathPageNotNameSite(setPathPageNotNameSite(node));

@@ -18,32 +18,18 @@ spring:
 
 indexing-settings:
   sites:
-    - url: https://usa.one/
-      name: usa.one
-    - url: https://www.lenta.ru/
-      name: Лента.ру
     - url: https://centrkinomir.ru/
       name: centrkinomir.ru
-    - url: https://www.playback.ru/
-      name: playBack.ru
-    - url: http://www.playback.ru/
-      name: playback.ru
+    - url: https://www.playback.ru
+      name: PlayBack.Ru
     - url: https://volochek.life/
       name: volochek.ru
-    - url: http://radiomv.ru/
-      name: radiomv.ru
     - url: https://ipfran.ru/
       name: ipfran.ru
-    - url: https://dimonvideo.ru/
-      name: fdimonvideo.ru
-    - url: https://nikoartgallery.com/
-      name: nikoartgallery.ru
     - url: https://et-cetera.ru/mobile/
       name: et-cetera.ru
     - url: https://www.lutherancathedral.ru/
       name: lutherancathedral.ru
-    - url: https://dombulgakova.ru/
-      name: dombulgakova.ru
     - url: https://www.svetlovka.ru/
       name: svetlovka.ru
 
