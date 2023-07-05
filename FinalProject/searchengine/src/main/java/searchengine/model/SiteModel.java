@@ -22,7 +22,7 @@ public class SiteModel implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "ENUM('INDEXING','INDEXED','FAILED')")
-    private StatusEnum status;
+    private StatusSiteModel status;
 
     @Column(name = "status_time", columnDefinition = "DATETIME NOT NULL")
     private LocalDateTime statusTime;

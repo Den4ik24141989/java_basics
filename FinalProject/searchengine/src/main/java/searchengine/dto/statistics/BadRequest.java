@@ -6,5 +6,4 @@ import lombok.Value;
 public class BadRequest {
     boolean result;
     String error;
-
 }

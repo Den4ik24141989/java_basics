@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.jsoup.nodes.Document;
-import searchengine.Connection;
+import searchengine.Connection.Connection;
 import searchengine.model.PageModel;
 import searchengine.services.IndexingProcessService;
 import searchengine.model.SiteModel;
-import searchengine.model.StatusEnum;
+import searchengine.model.StatusSiteModel;
 import searchengine.services.WorkingWithDataService;
 
 import java.io.IOException;
@@ -40,8 +40,8 @@ public class Parser implements Runnable {
         indexingProcessService.getForkJoinPool()
                 .invoke(new ParserURL(nodeUrl, workingWithDataService, indexingProcessService));
 
-        if (!indexingProcessService.isInterrupted() && !siteModel.getStatus().equals(StatusEnum.FAILED)) {
-            siteModel.setStatus(StatusEnum.INDEXED);
+        if (!indexingProcessService.isInterrupted() && !siteModel.getStatus().equals(StatusSiteModel.FAILED)) {
+            siteModel.setStatus(StatusSiteModel.INDEXED);
             workingWithDataService.updateTimeAndSaveSite(siteModel);
             log.info(siteModel.getUrl() + " индексация успешно завершена");
         }
@@ -49,7 +49,7 @@ public class Parser implements Runnable {
         if (indexingProcessService.isInterrupted()) {
             String message = "индексация остановлена пользователем";
             siteModel.setLastError(message);
-            siteModel.setStatus(StatusEnum.FAILED);
+            siteModel.setStatus(StatusSiteModel.FAILED);
             workingWithDataService.updateTimeAndSaveSite(siteModel);
             log.info(siteModel.getUrl() + " " + message);
         }
@@ -70,7 +70,7 @@ public class Parser implements Runnable {
             workingWithDataService.getPageRepository().save(pageModel);
             workingWithDataService.saveLemmasAndIndexes(pageModel);
             if (siteModel.getStatus() == null) {
-                siteModel.setStatus(StatusEnum.INDEXED);
+                siteModel.setStatus(StatusSiteModel.INDEXED);
             }
             workingWithDataService.getPageRepository().save(pageModel);
             workingWithDataService.updateTimeAndSaveSite(siteModel);

@@ -1,4 +1,4 @@
-package searchengine;
+package searchengine.Connection;
 
 import org.jsoup.Jsoup;
 

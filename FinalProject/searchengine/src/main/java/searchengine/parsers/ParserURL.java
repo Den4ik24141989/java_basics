@@ -6,8 +6,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import searchengine.Connection;
-import searchengine.model.StatusEnum;
+import searchengine.Connection.Connection;
+import searchengine.model.StatusSiteModel;
 import searchengine.services.IndexingProcessService;
 import searchengine.model.PageModel;
 import searchengine.model.SiteModel;
@@ -34,7 +34,7 @@ public class ParserURL extends RecursiveAction {
 
     @Override
     protected void compute() {
-        int random = (int) ((Math.random() * 5000) + 100);
+        int random = (int) ((Math.random() * 1000) + 500);
         try {
             sleep(random);
             Connection connection = new Connection(node.getUrl());
@@ -42,7 +42,7 @@ public class ParserURL extends RecursiveAction {
             String pathPageNotNameSite = workingWithDataService.setPathPageNotNameSite(node);
             PageModel pageModel = workingWithDataService.createPageModel(document, pathPageNotNameSite, siteModel);
 
-            if (!indexingProcessService.pageRepeats(pageModel)) {
+            if (!indexingProcessService.repeatPage(pageModel)) {
                 workingWithDataService.getPageRepository().save(pageModel);
                 workingWithDataService.updateTimeAndSaveSite(siteModel);
                 workingWithDataService.saveLemmasAndIndexes(pageModel);
@@ -62,8 +62,8 @@ public class ParserURL extends RecursiveAction {
         } catch (Exception e) {
             workingWithDataService.savePageException(node, siteModel, e);
             siteModel.setLastError(e.getMessage());
-            if (node.getUrl().equals(node.getRootElement())) {
-                siteModel.setStatus(StatusEnum.FAILED);
+            if (node.getUrl().equals(node.getRootElement().getUrl())) {
+                siteModel.setStatus(StatusSiteModel.FAILED);
             }
             workingWithDataService.updateTimeAndSaveSite(siteModel);
             log.info(siteModel.getUrl() + " " + e.getMessage());

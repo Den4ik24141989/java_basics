@@ -4,7 +4,7 @@ import lombok.Data;
 import searchengine.model.PageModel;
 
 @Data
-public class PageStatistics {
+public class StatisticsPage {
     private PageModel pageModel;
-    private int relevancePage;
+    private int rankPage;
 }

@@ -57,7 +57,7 @@ public class IndexingProcessService {
         return listSites.get(rootSiteURL);
     }
 
-    public boolean pageRepeats(PageModel pageModel) {
+    public boolean repeatPage(PageModel pageModel) {
         if (listPages.contains(pageModel)) {
             return true;
         }

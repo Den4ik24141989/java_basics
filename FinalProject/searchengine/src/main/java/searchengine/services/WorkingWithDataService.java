@@ -35,7 +35,7 @@ public class WorkingWithDataService {
     public SiteModel createAndSaveSite(Site site) {
         SiteModel siteModel = new SiteModel();
         siteModel.setName(site.getName());
-        siteModel.setStatus(StatusEnum.INDEXING);
+        siteModel.setStatus(StatusSiteModel.INDEXING);
         siteModel.setStatusTime(LocalDateTime.now());
         siteModel.setUrl(site.getUrl());
         siteRepository.save(siteModel);
@@ -54,7 +54,7 @@ public class WorkingWithDataService {
         pageModel.setCodeHTTPResponse(HttpStatus.NO_CONTENT.value());
         pageModel.setContentHTMLCode("индексация остановлена пользователем");
         pageModel.setPathPageNotNameSite(pathPageNotNameSite);
-        if (!indexingProcessService.pageRepeats(pageModel)) {
+        if (!indexingProcessService.repeatPage(pageModel)) {
             pageRepository.save(pageModel);
         }
     }
