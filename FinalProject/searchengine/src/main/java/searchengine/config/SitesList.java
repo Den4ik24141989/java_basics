@@ -27,7 +27,7 @@ public class SitesList {
         }
         return site;
     }
-    private String addEndSlash(String url) {
+    private static String addEndSlash(String url) {
         if (url.endsWith("/")) {
             return url;
         }
